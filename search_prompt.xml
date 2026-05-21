@@ -1,0 +1,7 @@
+<task>
+Analyze the company information provided for {company_name} and extract the most relevant, high-impact facts that would be beneficial for tailoring a job application or resume for this specific company.
+</task>
+
+<data>
+{search_data}
+</data>
