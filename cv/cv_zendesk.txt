@@ -1,0 +1,61 @@
+**Nikita Kudriashov**  
+Staff Machine Learning Engineer | Serbia | +381637238966 | nskudriashov@gmail.com | linkedin.com/in/nkudriashov | kaggle.com/nikitakudriashov
+
+**Professional Summary**  
+Staff-level Machine Learning Engineer with 10+ years of experience building and productionizing agentic AI, routing engines, and large-scale ML systems. Expert in architecting the intersection of classical ML, LLMs, and rules-based logic to solve complex task-routing and presence problems. Proven track record in mentoring engineering teams, managing high-availability SaaS infrastructure, and leading strategic roadmaps that balance inference latency with system precision.
+
+**Tech Stack**  
+*   **Languages:** Python, Java (Familiar), C++, SQL 
+*   **Frameworks:** PyTorch, FastAPI, ONNX, TensorFlow, LangChain 
+*   **LLM & GenAI:** Transformers, vLLM, Mamba (SSM), Qdrant, RAG pipelines, Hugging Face 
+*   **Data & MLOps:** PySpark, Databricks, Airflow, MLflow, Weights & Biases (W&B), Feature Stores, Docker, Kubernetes 
+*   **Visualization & Tools:** GitLab, Jenkins, Dash, Tableau 
+
+**Key Achievements** 
+➔ Architected robust MLOps pipelines using MLflow, W&B, and Feature Store integrations, ensuring high-availability model serving, drift monitoring, and automated retraining cycles for production SaaS environments. 
+➔ Optimized routing precision by 30% while maintaining P99 latency < 150ms through the implementation of advanced behavioral embedding models. 
+➔ Reduced system operational costs by >300% ROI by replacing high-latency LLM calls with hybrid architectures balancing rules-based logic and precision-tuned ML models. 
+➔ Designed and taught a comprehensive Generative AI & ML engineering course (30+ lectures) at EPIC Institute of Technology. 
+
+**Professional Experience** 
+
+**VOKI Games (Playrix) | Serbia, Novi Sad**  
+*The #1 European mobile game publisher*  
+**Machine Learning Manager | Sep 2023 – Present**  
+● Developed an enterprise-wide roadmap for AI integration, shifting focus from pure research to high-performance production systems. 
+● Architected an event-driven Multi-Agent GenAI framework for automated task routing and level design, incorporating priority logic that improved development throughput by 40%. 
+● Designed a player experience embedding model (Mamba architecture) for real-time state tracking, reducing segmentation mismatches by 30%. 
+● Partnered with Product Management to define the AI roadmap, balancing latency constraints of LLMs against the precision of classical ML to optimize production throughput and player LTV. 
+
+**Rubbles (SBDA Group) | Serbia, Novi Sad**  
+*Data-driven business process optimization for large enterprises*  
+**Lead Applied Scientist | Jan 2023 – Aug 2025**  
+● Spearheaded the design of an ML-driven demand forecasting toolkit; led the integration into major enterprise stacks, increasing product availability by 5% on average. 
+● Built internal LLM-based RAG systems for knowledge retrieval using LangChain and FAISS, optimizing developer onboarding and internal task routing by 50%. 
+● Served as primary technical liaison for C-level stakeholders, negotiating the trade-offs between LLM-driven components and classical ML for cost-effective deployment. 
+● Architected production-grade MLOps infrastructure for SaaS clients, focusing on model registry and feature store management to ensure system stability. 
+
+**Senior Applied Scientist | Apr 2022 – Jan 2023**  
+● Engineered high-throughput demand and elasticity models (LightGBM, XGBoost) for global retail, reducing stock-outs by 15%. 
+● Deployed scalable production-ready ML services using Spark and Kubernetes, ensuring high-throughput data processing and low-latency API response times. 
+● Led a team of 5+ developers, establishing best practices for code robustness, observability, and scalable AI infrastructure in a high-velocity environment. 
+
+**Applied Scientist | Nov 2021 – Apr 2022**  
+● Architected a global-scale demand forecasting system, improving WAPE by 12% via real-time traffic feature engineering. 
+● Implemented real-time routing of perishable inventory tasks, resulting in a 7% reduction in operational waste. 
+
+**Energy Sector (Confidential Client) | Moscow, Russian Federation**  
+**ML Research Engineer | Jun 2017 – Nov 2021**  
+● Led the Energy Efficiency project; developed dynamic ML models achieving a 5-7% reduction in industrial energy consumption. 
+● Headed the Data Science department, overseeing resource allocation and infrastructure for multiple IIoT projects. 
+● Designed an automated anomaly detection solution (TensorFlow) for industrial production lines, reducing unplanned equipment downtime by 12%. 
+● Engineered a "Digital Twin" MVP for refining processes, utilizing a scalable Python/K8s backend to simulate complex industrial asset behavior. 
+
+**Education**  
+● 2021: PhD Candidate in Computer Science – SPbPU (ABD)  
+● 2017: MSc in Technical Systems Management – SPbPU, Russia  
+● 2015: BSc in Computer Sciences – SPbPU, Russia  
+● 2013: Erasmus Exchange – Czech Technical University, Prague (English program) 
+
+**Certifications**  
+*   Generative AI – DeepLearning.AI (Jan 2024) | Advanced Data Science – IBM (Jul 2023) | SQL for Data Science – UC Davis (Sep 2021)
