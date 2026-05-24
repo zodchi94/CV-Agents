@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 from google import genai
 from schemas import VacancyRequirements, MirrorResult, FinalResult, CompanyInfoResult, CompanyExtraInfo
+from cv_schemas import DraftCV, RefinementResult
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(message)s')
@@ -37,7 +38,32 @@ class VacancyProcessor:
             )
         )
 
-    def process_vacancy(self, vacancy_text: str, template: str, mirror_template: str, search_template: str, search_mirror_template: str) -> str:
+    def generate_cv(self, vacancy_data: VacancyRequirements, company_info: CompanyExtraInfo, cv_data: str, draft_prompt: str, refinement_prompt: str) -> str:
+        # Load CV contents
+        cv_files = glob.glob(os.path.join("cv", "*"))
+        candidate_experience = ""
+        for file_path in cv_files:
+            with open(file_path, 'r') as f:
+                candidate_experience += f"\n--- {os.path.basename(file_path)} ---\n" + f.read()
+
+        # 1. Generate Draft
+        logger.info("Bot 3: Generating CV draft...")
+        draft_response = self._call_ai(draft_prompt.format(vacancy_data=vacancy_data.model_dump_json(), company_info=company_info.model_dump_json(), cv_data=candidate_experience), DraftCV)
+        draft_cv = DraftCV.model_validate_json(draft_response.text)
+
+        # 2. Refine
+        current_cv = draft_cv.content
+        for i in range(self.max_retries):
+            refinement_response = self._call_ai(refinement_prompt.format(current_cv=current_cv, vacancy_data=vacancy_data.model_dump_json(), company_info=company_info.model_dump_json()), RefinementResult)
+            refinement_obj = RefinementResult.model_validate_json(refinement_response.text)
+            logger.info(f"CV Refinement Attempt {i+1} Score: {refinement_obj.alignment_score}%")
+            if refinement_obj.alignment_score >= self.min_score:
+                return refinement_obj.data.content
+            current_cv = refinement_obj.data.content
+            
+        return current_cv
+
+    def process_vacancy(self, vacancy_text: str, template: str, mirror_template: str, search_template: str, search_mirror_template: str, draft_prompt: str, refinement_prompt: str) -> str:
         # 1. Parse vacancy
         logger.info("Bot 1: Parsing vacancy...")
         response = self._call_ai(template.format(vacancy_text=vacancy_text), VacancyRequirements)
@@ -74,18 +100,19 @@ class VacancyProcessor:
                 break
             current_search = search_obj.data.model_dump_json()
 
-        # 4. Final aggregation
-        final = FinalResult(vacancy=vacancy_data, extra_company_info=company_info)
-        return final.model_dump_json(indent=2)
+        # 4. Generate CV
+        return self.generate_cv(vacancy_data, company_info, "", draft_prompt, refinement_prompt)
 
 def main():
     VACANCIES_DIR = "vacancies"
     RESULTS_DIR = "results"
     
-    with open("prompt_template.xml", 'r') as f: template = f.read()
-    with open("mirror_prompt.xml", 'r') as f: mirror_template = f.read()
-    with open("search_prompt.xml", 'r') as f: search_template = f.read()
-    with open("search_mirror.xml", 'r') as f: search_mirror_template = f.read()
+    with open("prompts/prompt_template.xml", 'r') as f: template = f.read()
+    with open("prompts/mirror_prompt.xml", 'r') as f: mirror_template = f.read()
+    with open("prompts/search_prompt.xml", 'r') as f: search_template = f.read()
+    with open("prompts/search_mirror.xml", 'r') as f: search_mirror_template = f.read()
+    with open("prompts/cv_draft_prompt.xml", 'r') as f: draft_prompt = f.read()
+    with open("prompts/cv_refinement_prompt.xml", 'r') as f: refinement_prompt = f.read()
 
     processor = VacancyProcessor()
 
@@ -94,10 +121,11 @@ def main():
     
     for file_path in glob.glob(os.path.join(VACANCIES_DIR, "*.txt")):
         filename = os.path.basename(file_path)
+        md_filename = os.path.splitext(filename)[0] + ".md"
         with open(file_path, 'r') as f: text = f.read()
         try:
-            result = processor.process_vacancy(text, template, mirror_template, search_template, search_mirror_template)
-            with open(os.path.join(RESULTS_DIR, filename), 'w') as f: f.write(result)
+            result = processor.process_vacancy(text, template, mirror_template, search_template, search_mirror_template, draft_prompt, refinement_prompt)
+            with open(os.path.join(RESULTS_DIR, md_filename), 'w') as f: f.write(result)
         except Exception as e:
             logger.error(f"Failed {filename}: {e}")
 
