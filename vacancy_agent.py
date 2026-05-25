@@ -4,6 +4,7 @@ import logging
 import warnings
 from dotenv import load_dotenv
 from google import genai
+from pydantic import BaseModel
 from schemas import VacancyRequirements, MirrorResult, FinalResult, CompanyInfoResult, CompanyExtraInfo
 
 # Logging setup

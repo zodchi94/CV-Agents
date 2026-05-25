@@ -1,36 +1,31 @@
 # Nikita Kudriashov
-**Staff Machine Learning Engineer**
 Serbia | 0637238966 | nskudriashov@gmail.com | linkedin.com/in/nkudriashov | kaggle.com/nikitakudriashov | github.com/zodchi94
 
 ## Professional Summary
-Staff Machine Learning Engineer with extensive experience in designing and scaling production-grade ML systems for customer-centric SaaS platforms. Proven track record in leading technical initiatives for routing and presence systems, bridging the gap between classical ML and modern LLM-driven architectures. Expert in MLOps, rigorous experimentation frameworks, and mentoring high-performing engineering teams to deliver scalable, data-driven solutions.
+Staff Machine Learning Engineer with extensive experience in designing and scaling production-grade ML systems for high-concurrency environments. Expert in bridging the gap between classical ML, LLM-driven components, and complex routing logic to optimize customer experience. Proven track record in leading end-to-end ML lifecycles, from feature engineering and experimentation to production deployment. Strong advocate for MLOps best practices, technical craftsmanship, and collaborative stakeholder management.
 
 ## Key Achievements
-* **Agentic Routing Systems:** Architected and deployed complex ML pipelines for intelligent routing, significantly improving system efficiency and decision-making accuracy in high-scale environments.
-* **MLOps & Production Excellence:** Built robust end-to-end MLOps frameworks, including model registries and feature stores, ensuring high availability, observability, and continuous learning for production models.
-* **Experimentation Frameworks:** Designed and implemented rigorous A/B testing and offline evaluation frameworks, enabling data-driven product iterations and reducing time-to-market for new features.
-* **Technical Leadership:** Led cross-functional innovation sessions with Product teams, mentored junior scientists, and shaped long-term ML roadmaps through strategic trade-off analysis.
-* **Hybrid AI Architectures:** Successfully integrated classical ML models with LLM-driven components to solve complex, real-world customer experience challenges.
+* **Agentic Routing & LLM Integration:** Architected intelligent routing engines, successfully combining classical ML signals with LLM-driven components to improve decision accuracy and reduce latency in high-scale systems.
+* **MLOps & Production Excellence:** Built and scaled end-to-end MLOps pipelines, including model registries and feature stores, ensuring high availability and continuous learning for production services.
+* **Experimentation Frameworks:** Designed and implemented robust offline evaluation and online A/B testing frameworks, utilizing power analysis to drive data-informed product decisions.
+* **Strategic Leadership:** Mentored cross-functional teams, fostering technical craftsmanship and clear communication of complex model trade-offs to non-technical stakeholders.
 
 ## Technical Skills
-* **Languages:** Python (Expert), Java, Scala
-* **ML & AI:** Classical ML, LLMs, Agentic AI, Feature Engineering, Model Design
-* **MLOps:** Model Registry, Feature Store, Serving, Monitoring, Continuous Learning
-* **Experimentation:** A/B Testing, Power Analysis, Offline/Online Evaluation
-* **Infrastructure:** Kubernetes, Docker, Kafka, Redis, MySQL
+* **Languages:** Python (Expert), Java (Proficient), Scala (Proficient).
+* **ML & AI:** Classical ML, LLMs, Agentic AI, Feature Engineering, Model Design.
+* **MLOps:** Model Registry, Feature Store, Production Serving, Monitoring, Continuous Learning.
+* **Experimentation:** A/B Testing, Power Analysis, Offline/Online Evaluation Frameworks.
+* **Infrastructure:** Kubernetes, Docker, Spinnaker, AWS, Distributed Systems.
 
 ## Professional Experience
 
 ### Staff Machine Learning Engineer
-*Focus: Applied ML, Routing & Presence, Agentic Systems*
-* **End-to-End Ownership:** Lead the ML surface of routing products, from initial scoping and feature engineering to production serving and continuous monitoring.
-* **Strategic Planning:** Collaborate with Product leadership to define 18+ month roadmaps, balancing technical debt, innovation, and business requirements.
-* **Framework Design:** Architected experimentation frameworks that allow for rapid iteration and reliable performance measurement of routing decisions, including offline evals and online A/B testing.
-* **Mentorship:** Actively mentor scientists and engineers, fostering a culture of technical excellence and raising the team's overall ML literacy.
-* **Stakeholder Management:** Translate complex model behaviors and limitations into actionable insights for non-technical stakeholders, ensuring alignment on product tradeoffs and project effort estimation.
+*Focus: Applied ML, Routing & Presence*
+* **End-to-End Ownership:** Lead the full lifecycle of routing products, from identifying new data sources and feature engineering to model design, deployment, and monitoring.
+* **System Architecture:** Architect robust systems that integrate classical ML models with LLM-driven components, ensuring seamless interaction with microservice-based backends.
+* **Experimentation & Strategy:** Drive innovation sessions with Product teams to shape the long-term roadmap; design rigorous experimentation frameworks to validate routing outcomes.
+* **Cross-functional Collaboration:** Partner with backend engineers to contribute to service codebases (Java/Scala) and maintain operational guardrails via Kubernetes/Docker.
+* **Stakeholder Management:** Act as a technical lead, balancing project scope, quality, and business timelines while clearly articulating design decisions to cross-functional stakeholders.
 
 ## Education
-* [Insert Degree/University]
-
-## Certifications & Awards
-* [Insert relevant certifications or Kaggle achievements]
+* [Insert Degree/University Details]
