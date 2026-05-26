@@ -23,6 +23,8 @@ Your goal:
 - EXCLUDE Name, Surname, contact links, and any header styling from the `content` field. You only need to write the sections of the CV starting after the contact links (e.g., starting with Key Achievements, Experience, etc.).
 - If 'corrections' are provided, you MUST incorporate them to improve the CV's alignment.
 - If 'corrections' are empty, rely solely on your expertise to produce the best possible draft.
+- NO COPY-PASTING: Do not copy sentences or bullet points directly from the vacancy text. Rewrite the candidate's achievements to match the *intent* and *keywords* of the vacancy without losing the candidate's unique voice.
+- AVOID OVER-TAILORING: Ensure the resume remains a true reflection of the candidate's career. Do not force-fit every single requirement if it doesn't align with the candidate's actual background. Focus on the strongest transferable overlaps.
 - MANDATORY SECTIONS:
   - "Key Achievements" section, heavily relying on concrete examples from the candidate's actual experience.
 - STRICT RULES:

@@ -1,34 +1,48 @@
-# Nikita Kudriashov
-Serbia | 0637238966 | nskudriashov@gmail.com | linkedin.com/in/nkudriashov | kaggle.com/nikitakudriashov | github.com/zodchi94
+<div>
+<style>
+  body, p, li {font-size: 12px !important;}
+  h2 {font-size: 23px !important;}
+  h3 {font-size: 14px !important;}
+</style>
 
-## Professional Summary
-Staff Machine Learning Engineer with extensive experience in architecting scalable, agentic routing engines and production-grade LLM integrations for CX platforms. Proven track record in leading cross-functional teams to deliver high-impact ML products, balancing technical innovation with product trade-offs. Expert in MLOps, experimentation frameworks, and mentoring high-performing engineering teams to raise ML literacy and system craftsmanship.
+## Nikita Kudriashov ( Staff Machine Learning Engineer ) 
 
-## Key Achievements
-* **Agentic Routing & LLM Integration:** Led the design and deployment of advanced routing systems, successfully integrating LLM-driven components with classical ML models to improve decision accuracy and customer experience.
-* **MLOps & Infrastructure:** Architected end-to-end ML pipelines, including feature stores and model registries, significantly reducing time-to-market while ensuring system reliability and scalability at high throughput.
-* **Experimentation Frameworks:** Built robust offline evaluation and online A/B testing frameworks, enabling data-driven decision-making for complex routing logic and optimizing key performance metrics.
-* **Technical Leadership & Mentorship:** Mentored scientists and engineers, fostering a culture of technical excellence and raising team ML literacy through structured knowledge sharing and code reviews.
-* **Cross-functional Collaboration:** Partnered with Product and Engineering stakeholders to define project roadmaps, estimate effort, and communicate complex model behaviors in alignment with business objectives.
+Serbia | 0637238966 | [nskudriashov@gmail.com](mailto:nskudriashov@gmail.com) | [linkedin.com/in/nkudriashov](http://linkedin.com/in/nkudriashov) | [kaggle.com/nikitakudriashov](http://kaggle.com/nikitakudriashov) | [github.com/zodchi94](https://github.com/zodchi94)
 
-## Technical Skills
-* **Languages:** Python (Expert), Java, Scala
-* **ML & AI:** Classical ML, LLMs, Agentic AI, Model Design, Feature Engineering
-* **MLOps:** Model Registry, Feature Store, Serving, Continuous Learning
-* **Experimentation:** A/B Testing, Power Analysis, Offline/Online Evals
-* **Infrastructure:** Kubernetes, Docker, Spinnaker, AWS, Distributed Systems
+</div>
 
-## Professional Experience
+### Professional Summary
+Staff Machine Learning Engineer with over 10 years of experience building high-scale, real-time ML systems. I specialize in bridging the gap between complex product requirements and robust technical execution, with a focus on transitioning legacy systems to modern, agentic architectures. I have a proven track record of managing the full ML lifecycle—from statistical experimentation to high-concurrency production deployment—while fostering engineering excellence and mentoring cross-functional teams.
 
-### Staff Machine Learning Engineer
-*Focus: Applied ML, Routing & Presence Systems*
-* **System Ownership:** Own the end-to-end lifecycle of routing products, from initial model design and feature engineering to production serving and monitoring.
-* **Strategic Innovation:** Lead innovation sessions with Product teams to identify new data sources and shape the boundary between classical ML, LLM-driven components, and business rules.
-* **Design & Trade-offs:** Perform rigorous trade-off analysis between model complexity, latency, and cost to ensure long-term system viability and maintainability.
-* **Mentorship:** Actively mentor team members on best practices in ML engineering, code craftsmanship, and distributed system design.
+### Key Achievements
+* Architected and deployed 15+ production-grade ML systems, optimizing decision-making in high-throughput environments and delivering significant ROI.
+* Led the migration from static rule-based logic to agentic frameworks, reducing operational latency and increasing system adaptability for real-time routing.
+* Built and implemented rigorous A/B testing and offline evaluation frameworks to ensure data-driven validation for all model deployments.
+* Mentored engineering and science staff on best practices for model monitoring, drift detection, and continuous learning.
+* Migrated legacy backend services to containerized architectures (Kubernetes/Docker), improving system reliability and throughput for mission-critical services.
 
-### Senior Machine Learning Engineer
-*Focus: Scalable ML Platforms*
-* **Operational Excellence:** Developed and maintained production-grade ML services, utilizing Kubernetes and Docker to ensure high availability and reliability under massive data throughput.
-* **Stakeholder Management:** Communicated technical constraints and model limitations to non-technical stakeholders, ensuring alignment on project scope and product tradeoffs.
-* **Framework Development:** Designed and implemented internal tools for model evaluation, streamlining the transition from research to production.
+### Professional Experience
+
+#### VOKI Games
+**Senior ML Engineer**
+* Led the development of an agentic AI system for automated content validation, replacing manual workflows and accelerating development cycles by 40%.
+* Architected long-term behavioral embedding models using Mamba (SSM) to improve user segmentation and real-time presence accuracy.
+* Partnered with backend teams to integrate ML inference into high-concurrency game services, ensuring low-latency performance.
+
+#### Rubbles
+**Head of Data Science & Analytics / Lead ML Engineer**
+* Defined the technical strategy for integrating ML-based demand forecasting into enterprise retail platforms, managing the full lifecycle from EDA to production monitoring.
+* Built an internal LLM-powered RAG system for knowledge retrieval, ensuring secure and compliant deployment of generative models.
+* Led cross-functional teams of 20+ engineers, aligning technical roadmaps with business-critical product requirements.
+* Established MLOps pipelines using Kubernetes and Docker to maintain high availability for forecasting services.
+
+#### NDA (Confidential Client)
+**Senior ML Engineer**
+* Led the 'Energocontrol' initiative, developing dynamic predictive models for energy consumption integrated with industrial IoT infrastructure.
+* Managed the full ML lifecycle for anomaly detection systems, focusing on latency optimization and real-time data processing.
+* Mentored a team of 6+ engineers, emphasizing pragmatic problem-solving and the application of the scientific method to industrial challenges.
+
+### Technical Skills
+* **ML & AI:** Agentic AI, LLMs (RAG, Transformers), Classical ML (LightGBM, XGBoost), Statistical Experimentation, A/B Testing.
+* **Engineering:** Python, Java/Scala, Kubernetes, Docker, MLOps, Distributed Systems.
+* **Leadership:** Strategic Technical Leadership, Mentorship, Cross-functional Communication, Pragmatic Problem Solving.

@@ -9,6 +9,8 @@
 
 Serbia | 0637238966 | [nskudriashov@gmail.com](mailto:nskudriashov@gmail.com) | [linkedin.com/in/nkudriashov](http://linkedin.com/in/nkudriashov) | [kaggle.com/nikitakudriashov](http://kaggle.com/nikitakudriashov) | [github.com/zodchi94](https://github.com/zodchi94)
 
+### Professional Summary
+
 Senior Applied Scientist with 10+ years of experience in delivering AI and data-driven solutions across retail, energy, gamedev, and industrial sectors. Specialized in Generative AI, Agentic AI, ML system design, and algorithmic forecasting. Experienced in deploying ML models to production. Strong focus on problem-solving, algorithmic thinking, and engineering quality. Partnered with product managers and stakeholders to deliver high-impact solutions that drove strategic decision-making and revenue growth. Fluent English language skills (C1).
 
 ### Tech Stack
