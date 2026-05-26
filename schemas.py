@@ -1,6 +1,20 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
+class DraftCV(BaseModel):
+    professional_title: str = Field(description="The professional title suited for this vacancy, e.g., 'Senior ML Engineer'")
+    content: str = Field(description="The content of the tailored resume in Markdown format (excluding name, title, contact header, and styling tags)")
+    corrections: Optional[str] = Field(description="Corrections provided by previous refinement steps. If empty, rely on your own judgment.")
+
+class RefinementResult(BaseModel):
+    data: DraftCV = Field(description="The refined draft CV")
+    improvement_notes: str = Field(description="Notes on improvements made")
+    alignment_score: float = Field(description="A score from 0 to 100 on how well it fits the vacancy without lying")
+
+class HRScore(BaseModel):
+    score: int = Field(description="Score from 0 to 10 evaluating how well the resume matches the vacancy.")
+    reasoning: str = Field(description="Brief explanation of the score.")
+
 class Company(BaseModel):
     name: str = Field(description="Name of the company. If not mentioned, return 'Not specified'")
     domain: str = Field(description="Main industry or business area. If unknown, return 'Unknown'")

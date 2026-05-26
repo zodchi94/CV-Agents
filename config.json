@@ -6,11 +6,11 @@
     },
     "company_researcher": {
       "model": "gemini-flash-lite-latest",
-      "temperature": 0.2
+      "temperature": 0.0
     },
     "cv_generator": {
       "model": "gemini-flash-lite-latest",
-      "temperature": 0.3
+      "temperature": 0.5
     },
     "hr_evaluator": {
       "model": "gemini-flash-lite-latest",
