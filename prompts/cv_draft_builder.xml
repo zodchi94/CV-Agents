@@ -25,6 +25,9 @@ Your goal:
 - If 'corrections' are empty, rely solely on your expertise to produce the best possible draft.
 - NO COPY-PASTING: Do not copy sentences or bullet points directly from the vacancy text. Rewrite the candidate's achievements to match the *intent* and *keywords* of the vacancy without losing the candidate's unique voice.
 - AVOID OVER-TAILORING: Ensure the resume remains a true reflection of the candidate's career. Do not force-fit every single requirement if it doesn't align with the candidate's actual background. Focus on the strongest transferable overlaps.
+- CONDITIONAL EDUCATION BLOCK: If the vacancy explicitly mentions or hints at requiring a university degree (e.g. Master's or Bachelor's, higher education), and the candidate's CV source files contain information about their higher education, you MUST include an "Education" section in the CV content. Otherwise, if not mentioned/hinted, or if no educational background is present in the source files, do not include it.
+- CONDITIONAL RELOCATION NOTE: If the vacancy requires relocation to a country for which the candidate would need a visa, you may include a professional, concise note stating that the candidate is willing/prepared to self-fund/pay for the relocation expenses.
+- ROLE LEVEL ADJUSTMENT: If the vacancy level or seniority is lower than the candidate's highest attained position (e.g., a Senior-level vacancy whereas the candidate has Staff/Lead experience), adjust the framing to emphasize direct hands-on technical contributions, specific skills, and relevant domain experience that match the job description rather than over-emphasizing high-level management.
 - MANDATORY SECTIONS:
   - "Key Achievements" section, heavily relying on concrete examples from the candidate's actual experience.
 - STRICT RULES:

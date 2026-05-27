@@ -1,11 +1,24 @@
 import glob
 import os
+import shutil
 from agent_framework import Agent
 from schemas import (
     VacancyRequirements, MirrorResult, DraftCV, 
     CompanyExtraInfo, FinalResult, RefinementResult
 )
 PROMPTS_PATH = "prompts/"
+
+def clean_and_create_dirs():
+    dirs = [
+        "results/research_jsons",
+        "results/draft_cvs",
+        "results/refined_cvs",
+        "results/final_results"
+    ]
+    for d in dirs:
+        if os.path.exists(d):
+            shutil.rmtree(d)
+        os.makedirs(d, exist_ok=True)
 
 def load_cv_files():
     cv_data = {}
@@ -42,6 +55,12 @@ def run_pipeline(vacancy_path: str):
     research = researcher_agent.run(CompanyExtraInfo, {"company_name": vacancy_reqs.company.name})
     vacancy_reqs_extended = FinalResult(vacancy=vacancy_reqs, extra_company_info=research)
 
+    company_filename = vacancy_reqs.company.name.lower().replace(" ", "_")
+    
+    # Save intermediate Research JSON
+    with open(f"results/research_jsons/{company_filename}.json", "w") as f:
+        f.write(vacancy_reqs_extended.model_dump_json(indent=2))
+
     # 4. & 5. Draft & Refine CV Loop
     print("Step 4 & 5: Drafting and Refining CV...")
     draft_cv_agent = Agent(f"{PROMPTS_PATH}cv_draft_builder.xml")
@@ -52,13 +71,16 @@ def run_pipeline(vacancy_path: str):
     alignment_score, cnt = 0, 0
     
     while alignment_score < 98 and cnt < 3:
-        # Build from scratch with original source files + accumulated corrections
         draft = draft_cv_agent.run(DraftCV, {
             "vacancy_data": vacancy_reqs_extended, 
             "cv_text": str(cv_files),
             "corrections": accumulated_corrections
         })
         
+        if cnt == 0:
+            with open(f"results/draft_cvs/{company_filename}_draft.md", "w") as f:
+                f.write(f"# Professional Title: {draft.professional_title}\n\n" + draft.content)
+
         refined = refinement_agent.run(RefinementResult, {
             "vacancy_data": vacancy_reqs, 
             "current_cv": draft.content, 
@@ -70,6 +92,11 @@ def run_pipeline(vacancy_path: str):
             
         accumulated_corrections += f"\nIteration {cnt+1} feedback: {refined.improvement_notes}"
         cnt += 1
+   
+    # Save intermediate Refined CV
+    if refined:
+        with open(f"results/refined_cvs/{company_filename}_refined_{int(alignment_score)}.md", "w") as f:
+            f.write(f"# Professional Title: {refined.data.professional_title}\n\n" + refined.data.content)
 
     # 6. Final Human/Balance Refinement
     print("Step 6: Final Human/Balance Refinement...")
@@ -78,10 +105,6 @@ def run_pipeline(vacancy_path: str):
         "tailored_cv": refined.data.content,
         "vacancy_data": vacancy_reqs.model_dump_json()
     })
-
-    # Save final refined CV to results folder
-    os.makedirs("results", exist_ok=True)
-    company_filename = vacancy_reqs.company.name.lower().replace(" ", "_")
     
     header = (
         "<div>\n"
@@ -98,13 +121,15 @@ def run_pipeline(vacancy_path: str):
         "</div>\n\n"
     )
 
-    with open(f"results/{company_filename}.md", "w") as f:
+    # Save final results
+    with open(f"results/final_results/{company_filename}_{int(alignment_score)}.md", "w") as f:
         f.write(header + final_refined_cv.content)
 
     return vacancy_reqs_extended, refined
 
 def main():
     # Example usage
+    clean_and_create_dirs()
     for file_path in glob.glob("vacancies/*.txt"):
         print(f"Processing {file_path}")
         run_pipeline(file_path)
