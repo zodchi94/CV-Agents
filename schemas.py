@@ -47,6 +47,7 @@ class VacancyRequirements(BaseModel):
     ai_focus: AIFocus = Field(description="Explicit check for AI paradigms")
     tech_skills: List[Skill] = Field(description="Technical skills required")
     soft_skills: List[Skill] = Field(description="Soft skills required")
+    languages: Optional[List[Skill]] = Field(default=None, description="Language requirements (e.g., English, Russian) if specified in the vacancy")
 
 class CompanyExtraInfo(BaseModel):
     info: str = Field(description="Useful gathered info about the company for resume tailoring")

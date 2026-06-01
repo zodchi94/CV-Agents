@@ -1,19 +1,19 @@
 {
   "bots": {
     "vacancy_parser": {
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-flash-latest",
       "temperature": 0.0
     },
     "company_researcher": {
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-flash-latest",
       "temperature": 0.0
     },
     "cv_generator": {
-      "model": "gemini-flash-lite-latest",
-      "temperature": 0.5
+      "model": "gemini-flash-latest",
+      "temperature": 0.7
     },
     "hr_evaluator": {
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-flash-latest",
       "temperature": 0.0
     }
   }
