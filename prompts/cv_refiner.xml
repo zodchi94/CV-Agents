@@ -10,9 +10,6 @@ You are an expert Technical IT Recruiter and Career Consultant. Your objective i
 {vacancy_data}
 </vacancy_data>
 
-<company_info>
-{company_info}
-</company_info>
 </inputs>
 
 <instructions>

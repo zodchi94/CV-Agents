@@ -81,6 +81,7 @@ Your goal:
   2. ML Frameworks: If PyTorch is required but the candidate used Keras/TensorFlow, you may claim experience with PyTorch, framing it as part of their toolkit alongside their primary framework.
   3. Domain Tasks: You may reframe ML tasks to match the vacancy intent. For example, if the candidate solved Churn Prediction but the vacancy needs Anomaly Detection, adapt the terminology to highlight the structural similarities in data modeling and classification.
   4. Easily Learnable Tools: You may add minor, domain-standard tools required by the vacancy even if strictly absent, provided they logically align with the candidate's general seniority and technical stack.
+If you see that the vacancy is in the different location - add into description some disclamer, that person is ready to relocate and do not need any extra package, except visa sponsorship.
 </strict_rules>
 
 </instructions>

@@ -1,7 +1,7 @@
 import os
 import time
 from google import genai
-from google.genai.errors import ServerError
+from google.genai.errors import ServerError, ClientError
 from pydantic import BaseModel
 from typing import Type, TypeVar, Dict, Any
 
@@ -35,9 +35,12 @@ class Agent:
                     )
                 )
                 return schema.model_validate_json(response.text)
-            except ServerError as e:
+            except (ServerError, ClientError) as e:
+                if isinstance(e, ClientError) and e.status_code != 429:
+                    raise e
                 if attempt == retries - 1:
                     raise e
-                print(f"Gemini API 503 ServerError (high demand). Retrying in {backoff} seconds...")
+                
+                print(f"Gemini API Error (retriable: {e.status_code if hasattr(e, 'status_code') else '503'}). Retrying in {backoff} seconds...")
                 time.sleep(backoff)
                 backoff *= 2
