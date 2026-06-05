@@ -39,60 +39,46 @@ def run_pipeline(vacancy_path: str):
     print("Step 1: Parsing Vacancy Requirements...")
     parser_agent = Agent(f"{PROMPTS_PATH}vacancy_parser.xml")
     vacancy_reqs = parser_agent.run(VacancyRequirements, {"vacancy_text": vacancy_text})
-    
+
     # 1.1 Vacancy Parsing Mirroring
     print("Step 1.1: Mirroring Vacancy Requirements...")
-    mirrored_score, cnt = 0, 0
-    while mirrored_score < 98 and cnt < 5:
-        mirror_agent = Agent(f"{PROMPTS_PATH}vacancy_mirror.xml")
-        mirrored = mirror_agent.run(MirrorResult, {"input_data": vacancy_text, "output_data": vacancy_reqs.model_dump_json()})
-        vacancy_reqs, mirrored_score = mirrored.data, mirrored.alignment_score
-        print(f"Mirroring attempt {cnt+1}: Alignment Score = {mirrored_score}%")
-        cnt+=1
+    mirror_agent = Agent(f"{PROMPTS_PATH}vacancy_mirror.xml")
+    mirrored = mirror_agent.run(MirrorResult, {"input_data": vacancy_text, "output_data": vacancy_reqs.model_dump_json()})
+    vacancy_reqs, mirrored_score = mirrored.data, mirrored.alignment_score
+    print(f"Mirroring: Alignment Score = {mirrored_score}%")
+
 
     # Save intermediate Research JSON
     with open(f"results/research_jsons/{vacancy_name}.json", "w") as f:
         f.write(vacancy_reqs.model_dump_json(indent=2))
 
+
     # 4. & 5. Draft & Refine CV Loop
     print("Step 4 & 5: Drafting and Refining CV...")
     draft_cv_agent = Agent(f"{PROMPTS_PATH}cv_draft_builder.xml")
     refinement_agent = Agent(f"{PROMPTS_PATH}cv_refiner.xml")
-    
     cv_history = f"Base CV source files:\n{str(cv_files)}\n"
     corrections_history = ""
     refined = None
-    alignment_score, cnt = 0, 0
-    
-    while alignment_score < 98 and cnt < 5:
-        draft = draft_cv_agent.run(DraftCV, {
-            "vacancy_data": vacancy_reqs, 
-            "cv_history": cv_history,
-            "corrections_history": corrections_history if corrections_history else "No previous corrections yet. Rely on your own expertise."
-        })
-        
-        if cnt == 0:
-            with open(f"results/draft_cvs/{vacancy_name}_draft.md", "w") as f:
-                f.write(f"# Professional Title: {draft.professional_title}\n\n" + draft.content)
-
-        refined = refinement_agent.run(RefinementResult, {
-            "vacancy_data": vacancy_reqs, 
-            "current_cv": draft.content, 
-        })
-        
-        alignment_score = refined.alignment_score
-        print(f"Refinement iteration {cnt+1}: Score = {alignment_score}%")
-        
-        # Accumulate history of drafts and corrections
-        cv_history += f"\n--- Draft version {cnt+1} ---\nTitle: {draft.professional_title}\nContent:\n{draft.content}\n"
-        corrections_history += f"\nFeedback on Draft version {cnt+1}:\nScore: {refined.alignment_score}\nNotes: {refined.improvement_notes}\n"
-            
-        cnt += 1
-    
+    alignment_score = 0
+    draft = draft_cv_agent.run(DraftCV, {
+        "vacancy_data": vacancy_reqs, 
+        "cv_history": cv_history,
+        "corrections_history": corrections_history if corrections_history else "No previous corrections yet. Rely on your own expertise."
+    })
+    with open(f"results/draft_cvs/{vacancy_name}_draft.md", "w") as f:
+        f.write(f"# Professional Title: {draft.professional_title}\n\n" + draft.content)
+    refined = refinement_agent.run(RefinementResult, {
+        "vacancy_data": vacancy_reqs, 
+        "current_cv": draft.content, 
+    })
+    alignment_score = refined.alignment_score
+    print(f"Refinement: Score = {alignment_score}%")
     # Save intermediate Refined CV
     if refined:
         with open(f"results/refined_cvs/{vacancy_name}_refined_{int(alignment_score)}.md", "w") as f:
             f.write(f"# Professional Title: {refined.data.professional_title}\n\n" + refined.data.content)
+
 
     # 6. Final Human/Balance Refinement
     print("Step 6: Final Human/Balance Refinement...")
@@ -115,12 +101,11 @@ def run_pipeline(vacancy_path: str):
         "[linkedin.com/in/nkudriashov](http://linkedin.com/in/nkudriashov) | "
         "[kaggle.com/nikitakudriashov](http://kaggle.com/nikitakudriashov) | "
         "[github.com/zodchi94](https://github.com/zodchi94)\n\n"
-        "</div>\n\n"
     )
 
     # Save final results
     with open(f"results/final_results/{vacancy_name}_{int(alignment_score)}.md", "w") as f:
-        f.write(header + final_cv_content.content)
+        f.write(header + final_cv_content.content + "</div>\n\n")
 
     return None
 
