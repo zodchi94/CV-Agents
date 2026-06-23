@@ -23,7 +23,7 @@ Senior Applied Scientist with 10+ years of experience in delivering AI and data-
 
 ### Key Achievements
 
-*   Built and deployed **15+ ML solutions** in production (LightGBM, Prophet, FastAPI, Azure, AWS) across forecasting, RAG/LLM, and adaptive UX — generating **>300% ROI** and reducing operational costs for major FMCG clients (KFC, Mars, Henkel, Unilever, Perfetti Van Melle).
+*   Built and deployed **15+ ML solutions** in production across forecasting, RAG/LLM, and adaptive UX — generating **>300% ROI** and reducing operational costs for major FMCG clients (KFC, Mars, Henkel, Unilever, Perfetti Van Melle).
 *   Reduced level development time by **40%** via Multi-Agent GenAI pipeline (Claude, GPT) with simulation engine for automated Match-3 level design.
 *   Drove **~20% LTV** growth and **>300% ROI** through ML-based adaptive user experience control system, reducing churn by **50%**.
 *   Designed and taught Generative AI & ML course **(30+ lectures)** at EPIC Institute of Technology.
@@ -33,7 +33,7 @@ Senior Applied Scientist with 10+ years of experience in delivering AI and data-
 #### VOKI Games (Playrix)
 *The #1 European mobile game publisher*
 
-**Senior ML Engineer**
+**Principal ML Engineer**
 Sep 2025 – Present, Serbia, Novi Sad
 *   Developed a roadmap for the enterprise-wide integration of AI models.
 *   Developed a churn prediction ML model for Match-3 games to identify at-risk players. Drove an estimated 20% LTV growth.

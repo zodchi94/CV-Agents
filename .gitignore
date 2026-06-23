@@ -3,3 +3,6 @@
 results/*
 vacancies/*
 cv/*
+
+# MCP Vector Search index directory
+.mcp-vector-search/

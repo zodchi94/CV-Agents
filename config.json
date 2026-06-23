@@ -1,19 +1,36 @@
 {
-  "bots": {
-    "vacancy_parser": {
-      "model": "gemini-flash-latest",
+  "global": {
+    "max_steps": 5,
+    "max_patience": 1,
+    "k": 4,
+    "epsilon": 0.001,
+    "target_score": 0.95,
+    "debug": true
+  },
+  "pipeline": {
+    "parser": {
+      "model": "deepseek/deepseek-v4-flash",
       "temperature": 0.0
     },
-    "company_researcher": {
-      "model": "gemini-flash-latest",
+    "composer": {
+      "models": [
+        "minimax/minimax-m3",
+        "deepseek/deepseek-v4-pro",
+        "qwen/qwen-2.5-72b-instruct",
+        "openai/gpt-4o-mini"
+      ],
+      "temperature": 0.3
+    },
+    "auditor": {
+      "model": "deepseek/deepseek-v4-flash",
       "temperature": 0.0
     },
-    "cv_generator": {
-      "model": "gemini-flash-latest",
-      "temperature": 0.7
+    "critic": {
+      "model": "deepseek/deepseek-v4-pro",
+      "temperature": 0.3
     },
-    "hr_evaluator": {
-      "model": "gemini-flash-latest",
+    "scorer": {
+      "model": "deepseek/deepseek-v4-flash",
       "temperature": 0.0
     }
   }
