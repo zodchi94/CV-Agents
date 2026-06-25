@@ -1,9 +1,7 @@
 import os
 import asyncio
-import time
 from datetime import datetime
-from functools import wraps
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, ValidationError
 from dotenv import load_dotenv
 import httpx
 from schemas import RelevanceResponse
@@ -38,6 +36,7 @@ def get_config() -> dict:
             return {}
     return _config_cache
 
+
 def log_debug(message: str):
     """Log messages to debug.log if debug is enabled in config.json."""
     cfg = get_config()
@@ -51,31 +50,16 @@ def log_debug(message: str):
         except Exception:
             pass
 
+
 def load_prompt(path: str) -> str:
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
+
 
 def load_file(path: str) -> str:
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
-def retry_with_backoff(retries=5, base_delay=2):
-    def decorator(func):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            delay = base_delay
-            for attempt in range(retries):
-                try:
-                    return await func(*args, **kwargs)
-                except Exception as e:
-                    if attempt == retries - 1:
-                        raise e
-                    print(f"\n \t\t\t Error occurred: {e}. ❌")
-                    print(f"\t\t\t  Retrying in {delay} seconds...")
-                    await asyncio.sleep(delay)
-                    delay *= 2
-        return wrapper
-    return decorator
 
 def clean_json_string(text: str) -> str:
     if text:
@@ -150,7 +134,6 @@ def _inject_schema_into_prompt(prompt: str, schema) -> str:
     return prompt + schema_block
 
 
-# @retry_with_backoff(retries=8, base_delay=4)
 async def run_agent(prompt: str, schema, model: str, temperature: float, **kwargs) -> tuple[str, dict]:
     # Formats keyword arguments safely
     # If a value in kwargs is not a string, let's convert it to string or JSON
@@ -252,7 +235,6 @@ async def run_agent(prompt: str, schema, model: str, temperature: float, **kwarg
                 raise SchemaValidationError(err_msg, err_details, parsed)
 
         return model, parsed
-
 
 
 async def calculate_relevance(cv_text: str, vacancy_json: dict) -> float:

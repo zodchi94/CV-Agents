@@ -15,9 +15,6 @@ def load_config() -> dict:
 
 def clean_and_create_dirs():
     dirs = [
-        "results/research_jsons",
-        "results/draft_cvs",
-        "results/refined_cvs",
         "results/final_results"
     ]
     for d in dirs:

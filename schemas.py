@@ -1,19 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
-class DraftCV(BaseModel):
-    content: str = Field(description="The content of the tailored resume in Markdown format (excluding name, title, contact header, and styling tags)")
-    corrections: Optional[str] = Field(description="Corrections provided by previous refinement steps. If empty, rely on your own judgment.")
-
-class RefinementResult(BaseModel):
-    data: DraftCV = Field(description="The refined draft CV")
-    improvement_notes: str = Field(description="Notes on improvements made")
-    alignment_score: float = Field(description="A score from 0 to 100 on how well it fits the vacancy without lying")
-
-class HRScore(BaseModel):
-    score: int = Field(description="Score from 0 to 10 evaluating how well the resume matches the vacancy.")
-    reasoning: str = Field(description="Brief explanation of the score.")
-
 class Company(BaseModel):
     company_name: str = Field(description="Name of the company. If not mentioned, return 'Not specified'")
     company_domain: str = Field(description="Main industry or business area. If unknown, return 'Unknown'")
@@ -37,33 +24,12 @@ class AIFocus(BaseModel):
     requires_agentic_ai: bool = Field(description="Does the role explicitly require Agentic AI / Autonomous Agents?")
     extra: List[str] = Field(description="List of extra AI/ML subfields or requirements")
 
-class Skill(BaseModel):
-    skill_name: str = Field(description="Name of the skill or technology")
-    critical_level: str = Field(description="How critical this skill is (Core, Secondary, Optional)")
-    proficiency_level: str = Field(description="Required candidate proficiency level (Low, Middle, High)")
-    context: str = Field(description="How the skill will be used in practice")
-
 class VacancyRequirements(BaseModel):
     company_and_domain: Company = Field(description="Information about the company and domain")
     role_and_architecture: Role = Field(description="General description of the role and architecture")
     tasks_and_responsibilities: List[str] = Field(description="Extracted tasks and responsibilities")
     ai_and_ml_methodology_focus: AIFocus = Field(description="Explicit check for AI paradigms")
     skills_analysis: dict = Field(description="Parsed technical/soft skills and language requirements")
-
-class CompanyExtraInfo(BaseModel):
-    info: str = Field(description="Useful gathered info about the company for resume tailoring")
-
-class CompanyInfoResult(BaseModel):
-    data: CompanyExtraInfo = Field(description="The gathered company info")
-    alignment_score: float = Field(description="Accuracy score of the internet search parsing")
-
-class MirrorResult(BaseModel):
-    data: VacancyRequirements = Field(description="The corrected/mirrored vacancy data")
-    alignment_score: float = Field(description="Percentage (0-100) of how well the output matches the original input.")
-
-class FinalResult(BaseModel):
-    vacancy: VacancyRequirements = Field(description="The original vacancy requirements")
-    extra_company_info: CompanyExtraInfo = Field(description="Extra information about the company")
 
 class ParserSchema(VacancyRequirements):
     pass
