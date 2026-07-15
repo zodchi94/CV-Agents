@@ -1,101 +1,101 @@
-# CV Agent System (Оптимизатор Резюме)
+# CV Agent System (Resume Optimizer)
 
-Система многоагентного рефакторинга и адаптации резюме под вакансии на основе LLM через API OpenRouter. Система анализирует требования вакансии, генерирует несколько вариантов резюме параллельно, валидирует их на отсутствие галлюцинаций (аудит), оценивает релевантность (скоринг) и циклически улучшает результат на основе критики (критик).
-
----
-
-## 🛠️ Требования и подготовка к запуску
-
-Для развертывания и работы приложения вам понадобятся:
-1. **Python** версии 3.10 или выше.
-2. Активный API-ключ **OpenRouter** (для доступа к моделям ИИ).
+A multi-agent LLM-powered system for refactoring and tailoring resumes to specific job vacancies via the OpenRouter API. The system analyzes vacancy requirements, generates multiple resume variants in parallel, validates them for factual accuracy (audit), evaluates relevance (scoring), and iteratively improves the result based on meta-criticism (critic).
 
 ---
 
-## 🚀 Пошаговая инструкция по развертыванию
+## 🛠️ System Requirements
 
-### Шаг 1. Клонирование репозитория и переход в директорию
-Склонируйте репозиторий и перейдите в корневую папку проекта:
+To deploy and run the application you will need:
+1. **Python** version 3.10 or higher.
+2. An active **OpenRouter** API key (for LLM model access).
+
+---
+
+## 🚀 Step-by-Step Deployment Guide
+
+### Step 1. Clone the Repository and Enter the Directory
+Clone the repository and navigate to the project root:
 ```bash
 cd "/Users/nikita/Documents/Gemini/CV Agents"
 ```
 
-### Шаг 2. Создание и активация виртуального окружения
-Рекомендуется использовать виртуальное окружение Python для изоляции зависимостей:
+### Step 2. Create and Activate a Virtual Environment
+Using a Python virtual environment is recommended for dependency isolation:
 
-**На Linux/macOS:**
+**On Linux/macOS:**
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-**На Windows:**
+**On Windows:**
 ```cmd
 python -m venv venv
 venv\Scripts\activate
 ```
 
-### Шаг 3. Установка необходимых зависимостей
-Установите все зависимости из файла `requirements.txt`:
+### Step 3. Install Required Dependencies
+Install all dependencies from `requirements.txt`:
 ```bash
 pip install -r requirements.txt
 ```
 
-### Шаг 4. Настройка переменных окружения
-Создайте файл `.env` в корневой папке проекта и добавьте в него ваш OpenRouter API-ключ:
+### Step 4. Configure Environment Variables
+Create a `.env` file in the project root and add your OpenRouter API key:
 ```env
 OPENROUTER_API_KEY=your_openrouter_api_key_here
 ```
 
-### Шаг 5. Конфигурация приложения (Опционально)
-В файле `config.json` вы можете гибко настроить параметры оптимизации:
-- `global.max_steps` — максимальное количество итераций оптимизации резюме.
-- `global.k` — количество параллельно генерируемых вариантов резюме на каждой итерации.
-- `global.target_score` — желаемый порог совпадения (от 0.0 до 1.0), при котором оптимизация завершится досрочно.
-- `global.debug` — включение детального логирования работы агентов в файл `debug.log`.
-- `pipeline.*` — выбор моделей и температур генерации для каждого из агентов (парсер, компоузер, аудитор, критик, скорер).
+### Step 5. Application Configuration (Optional)
+In `config.json` you can fine-tune the optimization parameters:
+- `global.max_steps` — maximum number of CV optimization iterations.
+- `global.k` — number of CV variants generated in parallel per iteration.
+- `global.target_score` — desired match threshold (0.0 to 1.0) at which optimization terminates early.
+- `global.debug` — enable detailed agent request/response logging to `debug.log`.
+- `pipeline.*` — model selection and generation temperature for each agent (parser, composer, auditor, critic, scorer).
 
 ---
 
-## 📁 Структура папок и входных данных
+## 📁 Directory Structure and Input Data
 
-Перед запуском убедитесь в наличии следующих файлов:
-- **`cv/main_cv.md`** — ваше базовое резюме в формате Markdown (основной источник фактов).
-- **`cv/header.txt`** — (необязательно) блок стилей HTML/CSS или хэдер резюме, который будет добавлен в итоговый файл.
-- **`cv/`** — вы можете поместить сюда дополнительные файлы с контекстом (например, `linkedin_cv.txt` или `extra.txt`), они будут автоматически считаны как дополнительный источник информации о вашем опыте.
-- **`vacancies/`** — поместите сюда одну или несколько вакансий в формате `.txt` (например, `vacancies/vacancy1.txt`).
-- **`prompts/`** — шаблоны системных промптов для агентов (`parser.xml`, `composer.xml`, `audit.xml`, `critic.xml`, `scorer.xml`).
+Before running, ensure the following files exist:
+- **`cv/main_cv.md`** — your base resume in Markdown format (primary source of truth).
+- **`cv/header.txt`** — (optional) HTML/CSS style block or CV header that will be prepended to the final output.
+- **`cv/`** — you may place additional context files here (e.g., `linkedin_cv.txt` or `extra.txt`); they will be automatically loaded as auxiliary sources of information about your experience.
+- **`vacancies/`** — place one or more job postings as `.txt` files (e.g., `vacancies/vacancy1.txt`).
+- **`prompts/`** — system prompt templates for agents (`parser.xml`, `composer.xml`, `audit.xml`, `critic.xml`, `scorer.xml`).
 
 ---
 
-## 🏃 Запуск приложения
+## 🏃 Running the Application
 
-Для запуска процесса оптимизации резюме выполните:
+To start the resume optimization pipeline:
 ```bash
 python3 main.py
 ```
 
-### Что делает скрипт во время работы:
-1. Очищает старые результаты и подготавливает папку `results/final_results/`.
-2. Сканирует папку `vacancies/` на наличие вакансий.
-3. Извлекает требования из вакансии в структурированный JSON-формат (Агент-Парсер).
-4. Параллельно генерирует $K$ вариантов резюме с использованием различных моделей (Агент-Компоузер).
-5. Проверяет сгенерированные варианты на фактическое соответствие и отсутствие выдумок (Агент-Аудитор).
-6. Выставляет оценку соответствия валидным кандидатам (Агент-Скорер).
-7. Если лучшая оценка не достигла целевой, Агент-Критик анализирует недочеты и формирует план правок на следующую итерацию.
-8. Сохраняет итоговое резюме с наилучшей оценкой.
+### What the Script Does During Execution:
+1. Cleans old results and prepares the `results/final_results/` directory.
+2. Scans the `vacancies/` directory for job postings.
+3. Extracts vacancy requirements into structured JSON format (Parser Agent).
+4. Generates $K$ resume variants in parallel using different models (Composer Agent).
+5. Validates generated variants for factual accuracy and hallucination-free content (Auditor Agent).
+6. Scores valid candidates for relevance against the vacancy (Scorer Agent).
+7. If the best score has not reached the target, the Critic Agent analyzes shortcomings and formulates a correction plan for the next iteration.
+8. Saves the final resume with the highest match score.
 
 ---
 
-## 💾 Результаты работы
+## 💾 Results
 
-После завершения работы скрипта, оптимизированные резюме будут сохранены в папке:
+After execution, optimized resumes are saved to:
 `results/final_results/`
 
-Имя файла формируется как: `{название_вакансии}_{оценка_совпадения}.md` (например, `backend_developer_96.md`). Итоговый файл содержит красивую верстку и готов к экспорту в PDF или отправке работодателю.
+The filename format is: `{vacancy_name}_{match_score_percent}.md` (e.g., `backend_developer_96.md`). The output file includes HTML/CSS styling and is ready for PDF export or submission to employers.
 
 ---
 
-## 🔍 Отладка и логи
+## 🔍 Debugging and Logs
 
-- Если в `config.json` параметр `global.debug` равен `true`, детальный лог всех запросов к моделям и ответов будет записываться в файл `debug.log`. Это помогает проанализировать ход рассуждения агентов при необходимости.
+- If `global.debug` in `config.json` is set to `true`, detailed logs of all model requests and responses are written to `debug.log`. This helps analyze agent reasoning when troubleshooting.

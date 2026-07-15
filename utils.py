@@ -52,25 +52,27 @@ def log_debug(message: str):
 
 
 def load_prompt(path: str) -> str:
+    """Load a prompt template from a file."""
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
 
-def load_file(path: str) -> str:
-    with open(path, "r", encoding="utf-8") as f:
-        return f.read()
+# Alias kept for backward compatibility with main.py imports
+load_file = load_prompt
 
 
-def clean_json_string(text: str) -> str:
-    if text:
-        text = text.strip()
-        if text.startswith("```"):
-            lines = text.splitlines()
-            if lines[0].startswith("```"):
-                lines = lines[1:]
-            if lines and lines[-1].strip() == "```":
-                lines = lines[:-1]
-            text = "\n".join(lines).strip()
+def clean_json_string(text: str | None) -> str:
+    """Strip Markdown code fences and whitespace from a JSON string."""
+    if not text:
+        return ""
+    text = text.strip()
+    if text.startswith("```"):
+        lines = text.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].strip() == "```":
+            lines = lines[:-1]
+        text = "\n".join(lines).strip()
     return text
 
 
@@ -104,13 +106,72 @@ def _escape_control_chars_in_json(text: str) -> str:
     return ''.join(result)
 
 
+def _is_truncated_response(text: str | None) -> bool:
+    """Detect if the model response was truncated mid-generation.
+    A truncated JSON response typically ends without a closing brace/bracket,
+    or ends with an unterminated string value.
+    Returns False for None or empty input.
+    """
+    if not text:
+        return False
+    stripped = text.strip()
+    if not stripped:
+        return False
+    # Count unescaped braces to detect unclosed JSON objects
+    depth = 0
+    in_string = False
+    escape_next = False
+    for char in stripped:
+        if escape_next:
+            escape_next = False
+            continue
+        if char == '\\' and in_string:
+            escape_next = True
+            continue
+        if char == '"':
+            in_string = not in_string
+            continue
+        if not in_string:
+            if char == '{':
+                depth += 1
+            elif char == '}':
+                depth -= 1
+    # If depth > 0, the JSON object was never closed — response was truncated
+    return depth > 0 or in_string
+
+
 def safe_json_loads(text: str) -> dict:
+    """Parse JSON from model response, handling common issues:
+    - Markdown code block wrappers (```json ... ```)
+    - Extra text/data after the JSON object
+    - Literal control characters inside string values
+    - Truncated responses (raises JSONDecodeError so the candidate is skipped)
+    """
     text = clean_json_string(text)
+
+    # Detect truncated responses before attempting to parse
+    if _is_truncated_response(text):
+        raise json.JSONDecodeError("Response appears to be truncated (unclosed JSON object)", text, len(text))
+
+    # First attempt: standard parse
     try:
         return json.loads(text)
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
+        # Second attempt: extract the first complete JSON object via raw_decode
+        # This handles "Extra data" errors where the model appends text after JSON
+        if "Extra data" in str(e):
+            try:
+                obj, _ = json.JSONDecoder().raw_decode(text)
+                return obj
+            except json.JSONDecodeError:
+                pass
+        # Third attempt: escape control characters and retry
         fixed = _escape_control_chars_in_json(text)
-        return json.loads(fixed)
+        try:
+            return json.loads(fixed)
+        except json.JSONDecodeError:
+            obj, _ = json.JSONDecoder().raw_decode(fixed)
+            return obj
 
 
 def _inject_schema_into_prompt(prompt: str, schema) -> str:
@@ -134,24 +195,35 @@ def _inject_schema_into_prompt(prompt: str, schema) -> str:
     return prompt + schema_block
 
 
-async def run_agent(prompt: str, schema, model: str, temperature: float, **kwargs) -> tuple[str, dict]:
+async def run_agent(prompt: str, schema, model: str, temperature: float, max_retries: int = 2, **kwargs) -> tuple[str, dict]:
     # Formats keyword arguments safely
     # If a value in kwargs is not a string, let's convert it to string or JSON
     formatted_kwargs = {}
     for k, v in kwargs.items():
         if isinstance(v, (dict, list, BaseModel)):
-            if hasattr(v, "model_dump_json"):
+            if v is not None and hasattr(v, "model_dump_json"):
                 formatted_kwargs[k] = v.model_dump_json()
-            else:
+            elif v is not None:
                 formatted_kwargs[k] = json.dumps(v, ensure_ascii=False)
-        else:
+            else:
+                formatted_kwargs[k] = "None"  # Explicitly set to "None" or an empty string if v is None
+        elif v is not None:
             formatted_kwargs[k] = str(v)
+        else:
+            formatted_kwargs[k] = "None"  # Explicitly set to "None" if v is None
     
-    if formatted_kwargs:
+    try:
         formatted_prompt = prompt.format(**formatted_kwargs)
-    else:
+    except KeyError as e:
+        # Handle cases where prompt expects a key not present in formatted_kwargs
+        # This might happen if kwargs are conditionally passed
+        print(f"Warning: Placeholder {e} not found in prompt. Skipping formatting for this placeholder.")
+        # For now, we'll just return the original prompt if a key is missing
         formatted_prompt = prompt
-
+    except Exception as e:
+        print(f"An unexpected error occurred during prompt formatting: {e}")
+        formatted_prompt = prompt
+    
     # Inject the Pydantic schema into the prompt body (inside <root> tags)
     if schema is not None:
         formatted_prompt = _inject_schema_into_prompt(formatted_prompt, schema)
@@ -183,58 +255,80 @@ async def run_agent(prompt: str, schema, model: str, temperature: float, **kwarg
     if schema is not None:
         payload["response_format"] = {"type": "json_object"}
     
-    async with httpx.AsyncClient(timeout=120.0) as client:
-        response = await client.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers=headers,
-            json=payload
-        )
-        
-        if response.status_code != 200:
-            raise RuntimeError(f"OpenRouter API error {response.status_code}: {response.text}")
-        
-        result_json = response.json()
-        if "choices" not in result_json or len(result_json["choices"]) == 0:
-            raise RuntimeError(f"Unexpected OpenRouter response format: {json.dumps(result_json)}")
+    last_exception = None
+    for attempt in range(max_retries + 1):
+        async with httpx.AsyncClient(timeout=300.0) as client:
+            response = await client.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers=headers,
+                json=payload
+            )
             
-        content = result_json["choices"][0]["message"]["content"]
+            if response.status_code != 200:
+                raise RuntimeError(f"OpenRouter API error {response.status_code}: {response.text}")
+            
+            result_json = response.json()
+            if "choices" not in result_json or len(result_json["choices"]) == 0:
+                raise RuntimeError(f"Unexpected OpenRouter response format: {json.dumps(result_json)}")
+                
+            content = result_json["choices"][0]["message"]["content"]
 
-        parsed = safe_json_loads(content)
-        
-        # Log agent inputs/outputs for debug mode
-        log_debug(
-            f"=== AGENT RUN ===\n"
-            f"Model: {model}\n"
-            f"Temperature: {temperature}\n"
-            f"Schema: {schema.__name__ if schema else 'None'}\n"
-            f"Formatted Prompt:\n{formatted_prompt}\n\n"
-            f"Raw Response:\n{content}\n\n"
-            f"Parsed JSON:\n{json.dumps(parsed, ensure_ascii=False, indent=2)}\n"
-            f"=================\n"
-        )
-
-        if schema is not None:
             try:
-                validated = schema.model_validate(parsed)
-                return model, validated.model_dump()
-            except ValidationError as e:
-                err_details = e.errors()
-                err_msg = (
-                    f"Schema validation failed for '{schema.__name__}'. "
-                    f"{len(err_details)} error(s): "
-                    + "; ".join(
-                        f"[{' -> '.join(str(loc) for loc in err['loc'])}] {err['msg']}"
-                        for err in err_details
+                parsed = safe_json_loads(content)
+            except json.JSONDecodeError as e:
+                last_exception = e
+                if attempt < max_retries:
+                    log_debug(
+                        f"[RETRY {attempt+1}/{max_retries}] JSON parse error for model {model}: {e}\n"
+                        f"Raw content (first 500 chars): {content[:500]}\n"
                     )
-                )
-                print(f"\t\t\t ⚠️  {err_msg}")
-                log_debug(
-                    f"[VALIDATION ERROR] {err_msg}\n"
-                    f"Parsed Data:\n{json.dumps(parsed, ensure_ascii=False, indent=2)}\n"
-                )
-                raise SchemaValidationError(err_msg, err_details, parsed)
+                    print(f"\n\t\t\t ⚠️  JSON parse error (attempt {attempt+1}/{max_retries+1}), retrying...")
+                    await asyncio.sleep(1)
+                    continue
+                else:
+                    log_debug(
+                        f"[FINAL FAILURE] JSON parse error for model {model} after {max_retries+1} attempts: {e}\n"
+                        f"Raw content (first 500 chars): {content[:500]}\n"
+                    )
+                    raise
+            
+            # Log agent inputs/outputs for debug mode
+            log_debug(
+                f"=== AGENT RUN ===\n"
+                f"Model: {model}\n"
+                f"Temperature: {temperature}\n"
+                f"Schema: {schema.__name__ if schema else 'None'}\n"
+                f"Formatted Prompt:\n{formatted_prompt}\n\n"
+                f"Raw Response:\n{content}\n\n"
+                f"Parsed JSON:\n{json.dumps(parsed, ensure_ascii=False, indent=2)}\n"
+                f"=================\n"
+            )
 
-        return model, parsed
+            if schema is not None:
+                try:
+                    validated = schema.model_validate(parsed)
+                    return model, validated.model_dump()
+                except ValidationError as e:
+                    err_details = e.errors()
+                    err_msg = (
+                        f"Schema validation failed for '{schema.__name__}'. "
+                        f"{len(err_details)} error(s): "
+                        + "; ".join(
+                            f"[{' -> '.join(str(loc) for loc in err['loc'])}] {err['msg']}"
+                            for err in err_details
+                        )
+                    )
+                    print(f"\t\t\t ⚠️  {err_msg}")
+                    log_debug(
+                        f"[VALIDATION ERROR] {err_msg}\n"
+                        f"Parsed Data:\n{json.dumps(parsed, ensure_ascii=False, indent=2)}\n"
+                    )
+                    raise SchemaValidationError(err_msg, err_details, parsed)
+
+            return model, parsed
+    
+    # Should not reach here, but just in case
+    raise last_exception or RuntimeError(f"run_agent failed after {max_retries+1} attempts for model {model}")
 
 
 async def calculate_relevance(cv_text: str, vacancy_json: dict) -> float:

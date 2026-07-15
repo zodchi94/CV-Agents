@@ -1,406 +1,242 @@
-VOKI Games logo
+VOKI Games
 Principal ML Engineer
-
 VOKI Games · Full-time
-
 Sep 2025 - Present · 9 mos
-
 Novi Sad, Vojvodina, Serbia
-
-- Developed a roadmap for the enterprise-wide integration of AI models. 
-- Building aт ML model for users churn prediction.
-- Building a model for User experience embedding
-- Building AI-Agent based system for level design and validation
-
-EPIC Institute of Technology logo
-Lecturer for "AI and Data Science" course 
-
+•	Developed a roadmap for the enterprise-wide integration of AI models.
+•	Building aт ML model for users churn prediction.
+•	Building a model for User experience embedding
+•	Building AI-Agent based system for level design and validation
+EPIC Institute of Technology
+Lecturer for "AI and Data Science" course
 EPIC Institute of Technology · Part-time
-
 Aug 2024 - Present · 1 yr 10 mos
-
 Novi Sad, Vojvodina, Serbia · Remote
-
-- Have created a two-semester course on Data Science and Machine Learning, 
-- Mentain instructional materials, and delivering lectures.
-- Provide consultations for students
-
-karpov.courses logo
+•	Have created a two-semester course on Data Science and Machine Learning,
+•	Mentain instructional materials, and delivering lectures.
+•	Provide consultations for students
+karpov.courses
 Expert in "Data-based decision making" course
-
 karpov.courses · Part-time
-
 Mar 2024 - Aug 2025 · 1 yr 6 mos
-
 Remote
-
-- Have been providing assistance and expert guidance on course materials.
-- Supported students in solving course problems and overcoming challenges.
-
-Rubbles logo
+•	Have been providing assistance and expert guidance on course materials.
+•	Supported students in solving course problems and overcoming challenges.
 Rubbles
-
+Rubbles
 Full-time · 3 yrs 10 mos
-
 Head of Data Science & Analytics
-
 Jan 2023 - Aug 2025 · 2 yrs 8 mos
-
 Novi Sad, Vojvodina, Serbia · Remote
-
-- Management of 20 people (DS & DA) distributed over 5 different activities in parallel (product integrations and product development).
-- Mentoring and education: I have built a system of regular teams review, assessment, growth and development.
-- Developed and own a roadmap for Data Science implementing across the business area of Retail. 
-
-Product: Rubbles planning force 
+•	Management of 20 people (DS & DA) distributed over 5 different activities in parallel (product integrations and product development).
+•	Mentoring and education: I have built a system of regular teams review, assessment, growth and development.
+•	Developed and own a roadmap for Data Science implementing across the business area of Retail.
+Product: Rubbles planning force
 Main technologies: Python, LightGBM, Keras, k8s, Docker, pyTorch, transformers
-- Integration ML-based demand forecasting solutions for major clients in the retail sector
-- Integration promo optimization solutions for major clients in the retail sector
-- Took responsibility for deploying secure and well-tested software that meets privacy and compliance requirements.
-- ETL, EDA processes adjustment.
-- Took part in all products integrations (more then 10 cases in total)
-
+•	Integration ML-based demand forecasting solutions for major clients in the retail sector
+•	Integration promo optimization solutions for major clients in the retail sector
+•	Took responsibility for deploying secure and well-tested software that meets privacy and compliance requirements.
+•	ETL, EDA processes adjustment.
+•	Took part in all products integrations (more then 10 cases in total)
 Project: LLM-powered RAG System for Internal Document Management
 Developed a RAG system to enable fast and accurate question answering and data retrieval from internal documentation.
 Main technologies: Python, FAISS, LangChain, Hugging Face Transformers.
 Key contributions:
-- Designed and implemented vector search for efficient document retrieval.
-- Integrated pre-trained LLM for domain-specific question answering.
-- Optimized indexing and retrieval performance for large-scale text corpora.
-
+•	Designed and implemented vector search for efficient document retrieval.
+•	Integrated pre-trained LLM for domain-specific question answering.
+•	Optimized indexing and retrieval performance for large-scale text corpora.
 Skills: Streamlining, Cross-functional Team Leadership, +5 skills
-
 Lead ML Engineer
-
 Apr 2022 - Jan 2023 · 10 mos
-
 Istanbul, Istanbul, Türkiye · Remote
-
 Product: Demand Planning and Promo Planning
 Main technologies: Python,  LightGBM, XGBoost, Prophet, PySpark, k8s, docker
-- Adjustment of backend services and model inference
-- Product adjustments and improvement
-- ML models development and integration
-
+•	Adjustment of backend services and model inference
+•	Product adjustments and improvement
+•	ML models development and integration
 Project: Product adjustment for Demand Planning
 Main technologies: Python,  LightGBM, XGBoost, PySpark, k8s, docker, Azure Databricks
-- Took a leading position in a team, integrated solutions for major clients in the retail sector back in 2020. 
-- Expansion of coverage of the solution in clients contour.
-- EDA, Model development
-- Adjustment of backend services and model inference
-- Mentoring and team maintenance (2DS + 1DA)
-
+•	Took a leading position in a team, integrated solutions for major clients in the retail sector back in 2020.
+•	Expansion of coverage of the solution in clients contour.
+•	EDA, Model development
+•	Adjustment of backend services and model inference
+•	Mentoring and team maintenance (2DS + 1DA)
 Project: Product integration for Promo Planning
 Main technologies: Python,  LightGBM, LSTM, Keras,  PySpark, k8s, docker, Azure Databricks
-- EDA,  Model development
-- Adjustment of backend services and model inference
-- Optimization model improvement
-- Mentoring and team maintenance (2DS + 1DA + 1Backend)
-
+•	EDA,  Model development
+•	Adjustment of backend services and model inference
+•	Optimization model improvement
+•	Mentoring and team maintenance (2DS + 1DA + 1Backend)
 Skills: Machine Learning, Project Delivery, +7 skills
-
 Senior ML Engineer
-
 Nov 2021 - Apr 2022 · 6 mos
-
 Moscow City, Russia · Hybrid
-
 Product: Demand Forecasting solution for a major international quick service restaurant chain
 Main technologies: Python, SQL, Azure DataBricks, LightGBM, Prophet, PySpark
-- Promo and regular demand forecasting - ML model development;
-- EDA, Data Analysis, dashboards creation;
-- Adjustment of backend services and model inference
-- Product adjustments and improvement
-
+•	Promo and regular demand forecasting - ML model development;
+•	EDA, Data Analysis, dashboards creation;
+•	Adjustment of backend services and model inference
+•	Product adjustments and improvement
 Skills: Statistical Data Analysis, SQL, +12 skills
-
-Peter the Great St.Petersburg Polytechnic University logo
 Peter the Great St.Petersburg Polytechnic University
-
+Peter the Great St.Petersburg Polytechnic University
 7 yrs 7 mos
-
 St Petersburg, St Petersburg City, Russia
-
 Associate Professor
-
 Contract
-
 Jan 2019 - Feb 2023 · 4 yrs 2 mos
-
 Remote
-
-- Development and continuous improvement of AI courses
-- Delivering lectures to a large audience of listeners (undergraduates and postgraduates)
-
-Thumbnail for Курс Политеха по искусственному интеллекту изучают студенты из разных стран
-Курс Политеха по искусственному интеллекту изучают студенты из разных стран
-
+•	Development and continuous improvement of AI courses
+•	Delivering lectures to a large audience of listeners (undergraduates and postgraduates)
 Skills: Artificial Intelligence (AI), Mentoring, +2 skills
-
 Software Engineer
-
 Part-time
-
 Aug 2015 - Jan 2019 · 3 yrs 6 mos
-
 On-site
-
 Projects I have participated in:
-- 3D Modeling system for objects strength characteristics analysis (Delphi, OpenGL);
-- IR Diagnostic system for continuous metallurgical enterprise (C#, OpenCV, Matlab)
-- Back-end development for PCB assemblies system (T-SQL, php)
-- R&D "Digital Twin development principles for Oil refinery" - my first AI-based forecasting project (Python)
-
+•	3D Modeling system for objects strength characteristics analysis (Delphi, OpenGL);
+•	IR Diagnostic system for continuous metallurgical enterprise (C#, OpenCV, Matlab)
+•	Back-end development for PCB assemblies system (T-SQL, php)
+•	R&D "Digital Twin development principles for Oil refinery" - my first AI-based forecasting project (Python)
 I also led developments based in the cyber-physical systems laboratory since Sep. 2018
-
 Skills: Machine Learning, OpenCV, +4 skills
-
 Leading Oil & Gas company (NDA)
-
 Full-time · 4 yrs 6 mos
-
 St Petersburg, St Petersburg City, Russia
-
 Senior ML Engeneer
-
 Dec 2020 - Nov 2021 · 1 yr
-
 Hybrid
-
 Project: "Energocontrol: System of dynamic rationing of fuel and energy resources consumption"
 Role/Tasks: Lead Data Scientist
-- Requirements management, communications with customers
-- Lead for DS and back-end team (6 people) - resources allocation, tasks and performance control, communication with product owner, planning.
-- Development of models for dynamic regulation (Regression) of energy consumption.
-- Development of predictive models for energy consumption
-- Development of factor analysis algorithms to determin the causes of deviations in the consumption of energy resources
-- Development and support of RESTfull web services.
+•	Requirements management, communications with customers
+•	Lead for DS and back-end team (6 people) - resources allocation, tasks and performance control, communication with product owner, planning.
+•	Development of models for dynamic regulation (Regression) of energy consumption.
+•	Development of predictive models for energy consumption
+•	Development of factor analysis algorithms to determin the causes of deviations in the consumption of energy resources
+•	Development and support of RESTfull web services.
 Technologies:
-- Python: Keras, Flask, pandas, scikit-learn, catboost, xgboost, lightgbm, shap
-- Development management: Jira, Miro, Trello, Gitlab, 
-- Deploy/Logs: Docker, k8s, Kibana
-
+•	Python: Keras, Flask, pandas, scikit-learn, catboost, xgboost, lightgbm, shap
+•	Development management: Jira, Miro, Trello, Gitlab,
+•	Deploy/Logs: Docker, k8s, Kibana
 Also, as the head of the Data Science department, I carry out the allocation of resources for related projects, interview data scientists, participate in other projects as an expert and push forward ML concepts in the company.
-
 Skills: GitFlow, Project Delivery, +8 skills
-
 Middle ML Engineer
-
 Oct 2019 - Dec 2020 · 1 yr 3 mos
-
 On-site
-
 Product:  Anomaly detection solution for the oil production manufacture
 Role: Team Lead / Data Scientist
-- Team of 4 developers
-- Development of models for detecting anomalies in time series data
-- Development of a data verification algorithm
-- Development of a prototype dashboard for the solution
+•	Team of 4 developers
+•	Development of models for detecting anomalies in time series data
+•	Development of a data verification algorithm
+•	Development of a prototype dashboard for the solution
 Main technologies:
-- Python: Keras, Flask, pandas, numpy, scikit-learn, dash, plotly
-- Development management: Jira, Miro, Trello, Gitlab
-- Deploy: Docker, k8s
-
+•	Python: Keras, Flask, pandas, numpy, scikit-learn, dash, plotly
+•	Development management: Jira, Miro, Trello, Gitlab
+•	Deploy: Docker, k8s
 MVP:  "Digital twin for oil manufacture"
 Role: Tech Lead / Data Scientist
-- Simulated oil refining processes
-- Infrastructure solutions for the effective use of digital twins
+•	Simulated oil refining processes
+•	Infrastructure solutions for the effective use of digital twins
 Main technologies: python, tensorflow, keras, Flask, k8s, Docker
-
 Project: "Interpreted ML algorithm for dynamic properties identification for complex technological objects"
 Role: Middle Data Scientist
 Main technologies: python, tensorflow, keras
-
 Series of R&Ds : "Platform for developing, serving, and monitoring multi-instrumental digital twin models."
 Role: R&D Lead / Data Scientist
 Main technologies: python, Flask, Docker, k8s
-
 ML & DS expertise in many IIoT projects - examination of development results.
-
 Skills: Trello, Scikit-Learn, +7 skills
-
 Python Developer
-
 Sep 2018 - Oct 2019 · 1 yr 2 mos
-
-Project: Mixing planning system for oil components 
-Role: Beck-end developer 
+Project: Mixing planning system for oil components
+Role: Beck-end developer
 Main technologies: Django, PostgreSQL
-
-Project: The system for forecasting of the quality of oil products 
+Project: The system for forecasting of the quality of oil products
 Role: Beck-end developer / Data Scientist
 Main technologies: scikit-learn, keras, statmodels.
-- Data Analysis, EDA, predictive models development'
-
+•	Data Analysis, EDA, predictive models development'
 Project: R&D "PaaS system for oil modeling environments"
 Role: R&D Lead / Developer
 Main technologies: python, kafka, k8s, PostgreSQL, docker
-- Requirements and Team management
-- Back-end development
-- Results presentations
-
+•	Requirements and Team management
+•	Back-end development
+•	Results presentations
 Skills: Scikit-Learn, Data Analytics, +5 skills
-
 Data Engineer
-
 Jun 2017 - Sep 2018 · 1 yr 4 mos
-
 On-site
-
-Project: Oil product shipment planning system 
+Project: Oil product shipment planning system
 Main technologies: Python,MS SQL,Kafka,Docker
-
-- Data Base development, construction and maintenance;
-- Adjustment and support for ETL processes;
-- Development of data sets for ML models and optimization task;
-- Exploratory data analysis & Predictive and prescriptive ML models development.
-
+•	Data Base development, construction and maintenance;
+•	Adjustment and support for ETL processes;
+•	Development of data sets for ML models and optimization task;
+•	Exploratory data analysis & Predictive and prescriptive ML models development.
 Skills: Docker Products, Python (Programming Language), +3 skills
-
 Education
-
-Peter the Great St.Petersburg Polytechnic University logo
 Peter the Great St.Petersburg Polytechnic University
-
+Peter the Great St.Petersburg Polytechnic University
 Postgraduate Degree, Computer Science
-
 Oct 2017 – Oct 2021
-
 Skills: University Teaching, Project Delivery, +1 skill
-
-Peter the Great St.Petersburg Polytechnic University logo
 Peter the Great St.Petersburg Polytechnic University
-
+Peter the Great St.Petersburg Polytechnic University
 Master of Computer Applications - MCA, Management in technical systems
-
 Sep 2015 – Jun 2017
-
 Grade: Diploma with honors
-
 Skills: Computer Vision, Model Predictive Control, +3 skills
-
-Czech Technical University in Prague logo
 Czech Technical University in Prague
-
+Czech Technical University in Prague
 Exchange Erasmus student, Information Technology
-
 Feb 2013 – Jul 2013
-
 Skills: Oracle SQL Developer, Mathematics, +4 skills
-
-Peter the Great St.Petersburg Polytechnic University logo
 Peter the Great St.Petersburg Polytechnic University
-
+Peter the Great St.Petersburg Polytechnic University
 Bachelor's degree, Computer and Information Sciences, General
-
 Sep 2011 – Sep 2015
-
 Skills: C#, SQL, +4 skills
-
 Licenses & certifications
-
-DeepLearning.AI logo
-Agentic AI
-
 DeepLearning.AI
-
+Agentic AI
+DeepLearning.AI
 Issued May 2026
-
-Credential ID 875222ff-a34f-41af-8d85-f6124107f164
-
-Show credential
 Generative AI with Large Language Models
-
 DeepLearning.AI, Amazon Web Services
-
 Issued Jan 2024
-
-Credential ID 8X428SBZJR2S
-
-Show credential
 Skills: Artificial Intelligence (AI), Machine Learning
-
-Coursera logo
+Coursera
 Advanced Data Science with IBM
-
 Coursera
-
 Issued Jul 2023
-
-Credential ID YG52LTC8DT7N
-
-Show credential
 Skills: Apache Spark, Data Science
-
-Coursera logo
+Coursera
 SQL for Data Science
-
 Coursera
-
 Issued Sep 2021
-
-Credential ID WLQ2NVB7J4AE
-
-Show credential
 Skills: SQL, Data Science
-
-Stepik logo
+Stepik
 Python Programming
-
 Stepik
-
 Issued Feb 2018
-
-Show credential
-Stepik logo
 Statistics
-
 Stepik
-
 Issued Aug 2017
-
-Show credential
-Stepik logo
-Algorithms: theory and practice. Methods 
-
 Stepik
-
+Algorithms: theory and practice. Methods
+Stepik
 Issued Dec 2018
-
-Show credential
-Coursera logo
+Coursera
 Applied AI with DeepLearning
-
 Coursera
-
 Issued May 2021
-
-Show credential
-Coursera logo
+Coursera
 Fundamentals of Scalable Data Science
-
 Coursera
-
 Issued Feb 2021
-
-Credential ID LUHH3PN33H6C
-
-Show credential
-Coursera logo
-    Advanced Machine Learning and Signal Processing
-
 Coursera
-
+Advanced Machine Learning and Signal Processing
+Coursera
 Issued Apr 2021
-
-Credential ID B4ZRH7NQFNGM
-
-Show credential
-Coursera logo
-Deep Learning specialization
-
 Coursera
-
+Deep Learning specialization
+Coursera
 Issued Jan 2021
-
-Credential ID D3QJCA62QMYZ

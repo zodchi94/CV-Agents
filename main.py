@@ -36,43 +36,44 @@ async def main():
     EPSILON: float = global_cfg["epsilon"]
     TARGET_SCORE: float = global_cfg["target_score"]
 
-    # Инициализация папок результатов
+    # Initialize results directories
     clean_and_create_dirs()
 
-    # 1. Инициализация базовых данных (загрузка из папки cv/)
+    # 1. Initialize base data (load from cv/ folder)
     # -------------------------------------------------------
-    print(f"Парсим базовое резюме из cv/main_cv.md и собираем дополнительную информацию из других файлов в cv/", end=" ")
+    print("Parsing base CV from cv/main_cv.md and collecting additional information from other files in cv/", end=" ")
     try:
         base_cv: str = load_file("cv/main_cv.md")
-        
-        extra_info_parts = []
+
+        extra_info_parts: list[str] = []
         cv_dir = Path("cv")
         extra_info_parts = [
             f"{p.name}:\n{p.read_text(encoding='utf-8')}"
-            for p in cv_dir.iterdir() 
+            for p in cv_dir.iterdir()
             if p.is_file() and p.stem not in ("main_cv", "header")
         ] if cv_dir.is_dir() else []
         extra_info_parts.append("VERIFIED BASE CV CONTENT:\n" + base_cv)
         extra_info = "\n\n".join(extra_info_parts)
         del extra_info_parts
-        print(f"✅")
+        print("✅")
     except Exception as e:
-        print(f"Парсинг не завершен ❌. Ошибка: {e}")
+        print(f"CV parsing failed ❌. Error: {e}")
+        raise RuntimeError(f"Failed to load base CV data from cv/ folder: {e}") from e
 
-    # 2. Внешний цикл: Итерация по списку вакансий
+    # 2. Outer loop: iterate over the vacancy list
     # -------------------------------------------------------
     vacancies_paths = glob.glob("vacancies/*.txt")
-    print(f"Обнаружено {len(vacancies_paths)} вакансий для обработки: {vacancies_paths}")
+    print(f"Found {len(vacancies_paths)} vacancies for processing: {vacancies_paths}")
 
     for vacancy_path in vacancies_paths:
         vacancy_name = os.path.basename(vacancy_path).split('.')[0]
-        print(f"🔹 Процессинг вакансии: {vacancy_name} ({vacancy_path}): ")
+        print(f"🔹 Processing vacancy: {vacancy_name} ({vacancy_path}): ")
         log_debug(f"=== STARTING VACANCY PROCESSING: {vacancy_name} ({vacancy_path}) ===")
         raw_vacancy = load_file(vacancy_path)
-        
-        # 4.1 Извлечение требований в JSON
+
+        # 3.1 Extract vacancy requirements into structured JSON
         # ---------------------------------------------------
-        print("\tПарсинг вакансии в структурированный JSON ", end=" ")
+        print("\tParsing vacancy into structured JSON ", end=" ")
         try:
             _, vacancy_json = await run_agent(
                 prompt=load_prompt("prompts/parser.xml"),
@@ -83,13 +84,13 @@ async def main():
             )
             print("✅")
         except SchemaValidationError as e:
-            print(f"❌ Парсер вернул невалидный формат: {e}")
+            print(f"❌ Parser schema validation failed: {e}")
             log_debug(f"[PARSER SCHEMA ERROR] {e}")
-            # Use the raw parsed dict as fallback — downstream code will handle missing keys gracefully
+            # Use the raw parsed dict as fallback — downstream code handles missing keys gracefully
             vacancy_json = e.parsed_data
         log_debug(f"Parsed vacancy JSON:\n{json.dumps(vacancy_json, ensure_ascii=False, indent=2)}")
-        
-        # 4.2 Запуск цикла написания резюме
+
+        # 3.2 Start the CV rewriting loop
         # ---------------------------------------------------
         current_cv: str = base_cv
         best_score: float = 0.0
@@ -99,16 +100,16 @@ async def main():
         i: int = 0
 
         # Models assigned to each parallel composer instance (cycle if fewer models than K)
-        print("\tЗапуск процесса написания резюме: ")
+        print("\tStarting CV generation loop: ")
         composer_models = pipeline["composer"]["models"]
         
         while i < MAX_STEPS:
-            iter_msg = f"🔸 Итерация {i+1}/{MAX_STEPS} (Температура: {temperature}, Лучший скор: {best_score:.2f})"
+            iter_msg = f"🔸 Iteration {i+1}/{MAX_STEPS} (Temperature: {temperature}, Best score: {best_score:.2f})"
             print(f"\t{iter_msg}")
             log_debug(f"=== {iter_msg} ===")
             
-            # 4.2.1. Агент-Компоузер (Параллельная генерация с разными моделями)
-            print(f"\t\t Генерация {K} резюме-кандидатов в параллельном режиме с использованием моделей: \n\t\t {composer_models}...", end=" ")
+            # 4.2.1. Composer Agent — parallel generation across different models
+            print(f"\t\t Generating {K} candidate CVs in parallel using models: \n\t\t {composer_models}...", end=" ")
             composer_prompt = load_prompt("prompts/composer.xml")
             composer_tasks = [
                 run_agent(
@@ -143,14 +144,14 @@ async def main():
 
             if not candidates:
                 temperature = round(temperature + 0.1, 1)
-                print(f"\t\t Все кандидаты провалили валидацию. Температура поднимается до {temperature} ⚠️")
+                print(f"\t\t All candidates failed validation. Raising temperature to {temperature} ⚠️")
                 if temperature > 1.0:
-                    print("Лимит температуры превышен. Прерывание цикла генерации резюме. ❌")
+                    print("Temperature limit exceeded. Aborting CV generation loop. ❌")
                     break
                 continue
 
-            # 4.2.1. Агент-Аудитор (Фактологический контроль)
-            print(f"\t\t Асинхронный запуск аудита моделью ({pipeline['auditor']['model']})...", end=" ")
+            # 4.2.1. Auditor Agent — factual verification
+            print(f"\t\t Running async audit using model ({pipeline['auditor']['model']})...", end=" ")
             audit_prompt = load_prompt("prompts/audit.xml") 
             audit_tasks = [
                 run_agent(
@@ -179,7 +180,7 @@ async def main():
                     evaluations.append(eval_data)
             print("✅")
 
-            # Объединяем кандидата с его оценкой
+            # Merge each candidate with its audit evaluation
             audited_candidates = []
             for idx, eval_result in enumerate(evaluations):
                 model_name, cv_data = candidates[idx]
@@ -190,66 +191,66 @@ async def main():
                     "c_correction": eval_result.get('c_correction', '')
                 })
             _d = {c['model']: c['is_valid'] for c in audited_candidates}
-            print(f"\t\t Результаты аудита: \n\t\t\t {_d}")
+            print(f"\t\t Audit results: \n\t\t\t {_d}")
             log_debug(f"Audit results: {_d}")
             valid_candidates = [c for c in audited_candidates if c['is_valid'] != 0]
 
-            # Изменение температуры генерации если кандидатов нет
-            print(f"\t\t Аудит завершен: {len(valid_candidates)}/{K} кандидаты валидны {'✅' if valid_candidates else '⚠️'}")
+            # Increase temperature if no valid candidates remain
+            print(f"\t\t Audit complete: {len(valid_candidates)}/{K} candidates valid {'✅' if valid_candidates else '⚠️'}")
             if not valid_candidates:
                 temperature = round(temperature + 0.1, 1)
-                print(f"\t\t Температура поднимается до {temperature} ⚠️")
+                print(f"\t\t Raising temperature to {temperature} ⚠️")
                 if temperature > 1.0:
-                    print("Лимит температуры превышен. Прерывание цикла генерации резюме. ❌")
+                    print("Temperature limit exceeded. Aborting CV generation loop. ❌")
                     break
                 continue
                 
-            # 4.2.2. Агент-Скорер (Оценка релевантности)
-            print(f"\t\t Оценка качества составленных резюме с использованием {pipeline['scorer']['model']}...")
+            # 4.2.2. Scorer Agent — relevance evaluation
+            print(f"\t\t Scoring generated CVs using {pipeline['scorer']['model']}...")
             for candidate in valid_candidates:
                 candidate['r_score'] = await calculate_relevance(candidate['cv'], vacancy_json)
-                print(f"\t\t\t Кандидат {candidate['model']}: score = {candidate['r_score']:.2f}")
+                print(f"\t\t\t Candidate {candidate['model']}: score = {candidate['r_score']:.2f}")
                 log_debug(f"Candidate {candidate['model']} score: {candidate['r_score']:.2f}")
-            
-            # Выбор победителя итерации
+
+            # Select the iteration winner
             winner = max(valid_candidates, key=lambda x: x['r_score'])
             current_score = winner['r_score']
-            print(f"\t\t\t Победитель итерации: {winner['model']}  - {winner['r_score']:.2f}  ✅")
+            print(f"\t\t\t Iteration winner: {winner['model']}  - {winner['r_score']:.2f}  ✅")
             log_debug(f"Iteration winner: {winner['model']} with score {current_score:.2f}")
 
             
-            # 4.2.3. Проверка критериев остановки
+            # 4.2.3. Stopping criteria check
             delta = current_score - best_score
 
             if current_score >= TARGET_SCORE:
-                print(f"\t Скор достиг ({current_score:.2f} >= {TARGET_SCORE})! Завершение оптимизации.   ✅")
+                print(f"\t Target score reached ({current_score:.2f} >= {TARGET_SCORE})! Stopping optimization.   ✅")
                 current_cv = winner['cv']
                 best_score = current_score
                 break
 
             if delta <= EPSILON:
                 patience += 1
-                print(f"\t\t Улучшение метрики незначиельно (delta = {delta:.2f} <= {EPSILON}). Patience: {patience}/{MAX_PATIENCE} ⚠️")
+                print(f"\t\t Metric improvement negligible (delta = {delta:.2f} <= {EPSILON}). Patience: {patience}/{MAX_PATIENCE} ⚠️")
                 if patience >= MAX_PATIENCE:
-                    print("\t\t Терпение алгоритма закончилось. Завершение оптимизации. ⚠️")
+                    print("\t\t Patience exhausted. Stopping optimization. ⚠️")
                     if current_score > best_score:
                         best_score = current_score
                         current_cv = winner['cv']
                     break
             else:
-                print(f"\t\t Метрика улучшилась с {best_score:.2f} до {current_score:.2f}! ✅")
+                print(f"\t\t Metric improved from {best_score:.2f} to {current_score:.2f}! ✅")
                 best_score = current_score
                 current_cv = winner['cv']
-                patience = 0 # Сброс счетчика терпения
+                patience = 0  # Reset patience counter
                 
             
-            # 4.2.4. Мета-критика
-            print(f"\t\t Запуск мета-критика ({pipeline['critic']['model']}) для рефлексии и планирования...")
+            # 4.2.4. Meta-Critic
+            print(f"\t\t Running meta-critic ({pipeline['critic']['model']}) for reflection and planning...")
             critic_prompt = load_prompt("prompts/critic.xml")
-            
-            # Собираем логи ошибок от отбракованных кандидатов на этой итерации
-            failed_logs = [c['c_correction'] for c in [winner]]
-            aggregated_errors = "\n".join(failed_logs) if failed_logs else "No factual errors in the last generation."
+
+            # Collect audit corrections from all candidates (including invalidated ones) for the critic
+            correction_logs = [c.get('c_correction', '') for c in audited_candidates if c.get('c_correction', '').strip()]
+            aggregated_errors = "\n".join(correction_logs) if correction_logs else "No factual errors found in this iteration."
             
             try:
                 _, action_plan_response = await run_agent(
@@ -266,14 +267,17 @@ async def main():
                 print(f"\t\t\t ⚠️  Critic schema error: {e}. Keeping previous action plan.")
                 log_debug(f"[CRITIC SCHEMA ERROR] {e}")
                 # Keep the previous action_plan — the loop continues with the last known good plan
-            print(f"\t\t Сформирован новый план поправок: ✅")
-            
-            # Инкремент шага цикла
+            except Exception as e:
+                print(f"\t\t\t ⚠️  Critic error: {e}. Keeping previous action plan.")
+                log_debug(f"[CRITIC ERROR] {e}")
+                # Keep the previous action_plan — the loop continues with the last known good plan
+            print(f"\t\t New correction plan generated: ✅")
+
+            # Increment iteration counter
             i += 1
 
-
-        # 7. Сохранение итогового результата для текущей вакансии с красивой версткой
-        print(f"\t Сохранение итогового результата для {vacancy_name} с лучшим результатом {best_score:.2f}...")
+        # 4. Save final result for the current vacancy
+        print(f"\t Saving final result for {vacancy_name} with best score {best_score:.2f}...")
 
         final_file_path = f"results/final_results/{vacancy_name}_{int(best_score * 100)}.md"
         try:
